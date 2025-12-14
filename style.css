@@ -1,0 +1,379 @@
+/* Global Styles */
+:root {
+    --primary-color: #007bff; /* Medical Blue */
+    --secondary-color: #f8f9fa; /* Light Gray Background */
+    --text-color: #333;
+    --accent-red: #ff3b3b; /* Pointer Color */
+    --pointer-glow: rgba(255, 59, 59, 0.6);
+    --modal-overlay: rgba(0, 0, 0, 0.75);
+    --font-main: 'Inter', sans-serif;
+    --navbar-height: 60px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-top: var(--navbar-height); /* Space for sticky navbar */
+}
+
+/* Sticky Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}
+
+.nav-info {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Main Content */
+.main-content {
+    min-height: calc(100vh - var(--navbar-height) - 60px); /* Adjust for footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.anatomy-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Anatomy Image Container */
+.anatomy-container {
+    position: relative; /* CRITICAL: Anchor for absolute pointers */
+    max-width: 100%; /* Resize responsibly */
+    /* width: auto; Remove fixed width to let it scale */
+    display: inline-block; /* Hug the image dimensions */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    /* overflow: hidden; Keeps pointers contained if desired, or remove to let them bleed */
+    background: #fff;
+}
+
+.anatomy-image {
+    display: block;
+    max-height: 80vh; /* Don't be taller than screen */
+    width: auto;
+    max-width: 100%; /* Responsive width */
+}
+
+/*
+   POINTER STYLES
+   --------------------------------------------------
+   Use .pointer-item in JS.
+   Top/Left will be set inline by JS.
+*/
+.pointer-item {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--accent-red);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transform: translate(-50%, -50%); /* Centering the dot on the coordinate */
+    box-shadow: 0 0 0 rgba(255, 59, 59, 0.4);
+    animation: pulse 2s infinite;
+}
+
+/* Hover Tooltip */
+.pointer-item::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 120%; /* Position above the dot */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    visibility: hidden;
+    z-index: 20;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.pointer-item:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Pulsing Animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 var(--pointer-glow);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 59, 59, 0); /* Expand aura and fade out */
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 59, 59, 0);
+    }
+}
+
+.instruction-text {
+    text-align: center;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay);
+    backdrop-filter: blur(4px); /* Modern frosted glass effect */
+}
+
+.modal-content {
+    position: relative;
+    background: #fff;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Avoid overflow */
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    line-height: 1;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    gap: 2rem;
+    overflow-y: auto; /* Scroll info if too long */
+}
+
+.modal-image-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2f5;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.modal-image-col img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.modal-info-col {
+    flex: 1;
+}
+
+.modal-info-col h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.organ-desc {
+    margin-bottom: 1.5rem;
+    color: #4a5568;
+    line-height: 1.7;
+}
+
+.diseases-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+}
+
+.diseases-section ul {
+    list-style-type: disc;
+    padding-left: 1.2rem;
+    color: #4a5568;
+}
+
+.diseases-section li {
+    margin-bottom: 0.25rem;
+}
+
+/* Interactive Disease List */
+.disease-item {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    list-style: none; /* Remove default bullets as we might style them differently */
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+}
+
+.disease-item:hover {
+    background-color: #f0f7ff;
+    border-color: #cce5ff;
+}
+
+.disease-name {
+    font-weight: 600;
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.disease-name::after {
+    content: '+';
+    font-weight: bold;
+    color: #999;
+    transition: transform 0.3s;
+}
+
+.disease-item.active .disease-name::after {
+    content: '-';
+    transform: rotate(180deg);
+}
+
+.disease-desc {
+    display: none;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #555;
+    padding-left: 10px;
+    border-left: 3px solid #ddd;
+    line-height: 1.5;
+}
+
+.disease-item.active .disease-desc {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Footer */
+.footer {
+    background: #fff;
+    padding: 1.5rem;
+    text-align: center;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .modal-image-col img {
+        max-height: 200px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+
+    .navbar {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    body {
+        padding-top: 70px;
+    }
+}

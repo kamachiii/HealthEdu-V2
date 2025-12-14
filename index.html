@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthEdu - Anatomi Tubuh Manusia</title>
+    <!-- Use Google Fonts for a premium look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">HealthEdu - Anatomi Tubuh</div>
+            <div class="nav-info">Tugas SIK - Kelompok 1</div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="anatomy-wrapper">
+            <!-- Anatomy Container -->
+            <div class="anatomy-container" id="anatomyContainer">
+                <img src="assets/full_body_diagram.png" alt="Diagram Anatomi Tubuh Manusia" class="anatomy-image">
+                <!-- Pointers will be injected here by JavaScript -->
+            </div>
+
+            <div class="instruction-text">
+                <p>Klik pada titik merah berdenyut untuk melihat detail organ.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="organModal" class="modal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image-col">
+                    <img id="modalImg" src="" alt="Detail Organ">
+                </div>
+                <div class="modal-info-col">
+                    <h2 id="modalTitle">Nama Organ</h2>
+                    <p id="modalDesc" class="organ-desc">Penjelasan fungsi organ...</p>
+
+                    <div class="diseases-section">
+                        <h3>Penyakit Terkait:</h3>
+                        <ul id="modalDiseases">
+                            <!-- List items injected by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Anggota Kelompok 1: Andi, Budi, Citra, Dewi, Eko, Fajar</p>
+            <p>&copy; 2024 HealthEdu. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
